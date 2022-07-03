@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+    <mvc:annotation-driven /> <!-- 启用基于注解的mvc -->
+    <mvc:default-servlet-handler /><!-- 静态资源正常工作 -->
+    <context:component-scan base-package="com.easybuy.controller"></context:component-scan>
+    <bean id="viewResolver"
+          class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+        <property name="viewClass"
+                  value="org.springframework.web.servlet.view.JstlView" />
+        <property name="prefix" value="/WEB-INF/pages/manage/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
+    <!--文件上传-->
+    <bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- one of the properties available; the maximum file size in bytes -->
+        <property name="maxUploadSize" value="50000000" />
+    </bean>
+    <!--拦截器-->
+<!--    <mvc:interceptors>
+        &lt;!&ndash; 会拦截所有Controller类里的所有处理方法 &ndash;&gt;
+        <bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+            <property name="paramName" value="lang">  </property>
+        </bean>
+        <mvc:interceptor>
+            <mvc:mapping path="/**/"/>
+            <mvc:exclude-mapping path="/dologin"/>&lt;!&ndash;不拦截doLogin&ndash;&gt;
+            <mvc:exclude-mapping path="/doRegister"/>&lt;!&ndash;不拦截doRegister&ndash;&gt;
+            <mvc:exclude-mapping path="*.css/*"/>&lt;!&ndash;不拦截 .js/&ndash;&gt;
+            <mvc:exclude-mapping path="*.js/*"/>&lt;!&ndash;不拦截/&ndash;&gt;
+            <bean class = "com.interceptorstudy.SessionInterceptor"></bean>
+        </mvc:interceptor>
+    </mvc:interceptors>-->
+
+</beans>

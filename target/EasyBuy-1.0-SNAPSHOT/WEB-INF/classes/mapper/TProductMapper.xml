@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easybuy.dao.TProductMapper">
+  <resultMap id="BaseResultMap" type="com.easybuy.entity.TProduct">
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
+    <result column="SALE_PRICE" jdbcType="REAL" property="salePrice" />
+    <result column="COST_PRICE" jdbcType="REAL" property="costPrice" />
+    <result column="CATE_ID" jdbcType="INTEGER" property="cateId" />
+    <result column="PIC_URL" jdbcType="VARCHAR" property="picUrl" />
+    <result column="CREATE_TIME" jdbcType="VARCHAR" property="createTime" />
+    <result column="CREATE_USER" jdbcType="INTEGER" property="createUser" />
+  </resultMap>
+
+  <resultMap id="myMap" type="com.easybuy.entity.TProductMore" extends="BaseResultMap">
+    <result column="sname" jdbcType="VARCHAR" property="smallCatname" />
+    <result column="bname" jdbcType="VARCHAR" property="bigCatname" />
+    <result column="bigCatid" jdbcType="INTEGER" property="bigCatId" />
+  </resultMap>
+
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    ID, NAME, DESCRIPTION, SALE_PRICE, COST_PRICE, CATE_ID, PIC_URL, CREATE_TIME, CREATE_USER
+  </sql>
+  <select id="selectByExample" parameterType="com.easybuy.entity.TProductExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_product
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_product
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_product
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.easybuy.entity.TProductExample">
+    delete from t_product
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.easybuy.entity.TProduct">
+    insert into t_product (ID, NAME, DESCRIPTION, 
+      SALE_PRICE, COST_PRICE, CATE_ID, 
+      PIC_URL, CREATE_TIME, CREATE_USER
+      )
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{salePrice,jdbcType=REAL}, #{costPrice,jdbcType=REAL}, #{cateId,jdbcType=INTEGER}, 
+      #{picUrl,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, #{createUser,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.easybuy.entity.TProduct">
+    insert into t_product
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="name != null">
+        NAME,
+      </if>
+      <if test="description != null">
+        DESCRIPTION,
+      </if>
+      <if test="salePrice != null">
+        SALE_PRICE,
+      </if>
+      <if test="costPrice != null">
+        COST_PRICE,
+      </if>
+      <if test="cateId != null">
+        CATE_ID,
+      </if>
+      <if test="picUrl != null">
+        PIC_URL,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="createUser != null">
+        CREATE_USER,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="salePrice != null">
+        #{salePrice,jdbcType=REAL},
+      </if>
+      <if test="costPrice != null">
+        #{costPrice,jdbcType=REAL},
+      </if>
+      <if test="cateId != null">
+        #{cateId,jdbcType=INTEGER},
+      </if>
+      <if test="picUrl != null">
+        #{picUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null">
+        #{createUser,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+
+    <insert id="addProduct" parameterType="com.easybuy.entity.TProductMore">
+      insert into t_product
+      <trim prefix="(" suffix=")" suffixOverrides=",">
+        <if test="id != null">
+          ID,
+        </if>
+        <if test="name != null">
+          NAME,
+        </if>
+        <if test="description != null">
+          DESCRIPTION,
+        </if>
+        <if test="salePrice != null">
+          SALE_PRICE,
+        </if>
+        <if test="costPrice != null">
+          COST_PRICE,
+        </if>
+        <if test="cateId != null">
+          CATE_ID,
+        </if>
+        <if test="picUrl != null">
+          PIC_URL,
+        </if>
+        <if test="createTime != null">
+          CREATE_TIME,
+        </if>
+        <if test="createUser != null">
+          CREATE_USER,
+        </if>
+        <if test="createTime != null">
+          CREATE_TIME,
+        </if>
+        <if test="createUser != null">
+          CREATE_USER,
+        </if>
+
+      </trim>
+      <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="id != null">
+          #{id,jdbcType=INTEGER},
+        </if>
+        <if test="name != null">
+          #{name,jdbcType=VARCHAR},
+        </if>
+        <if test="description != null">
+          #{description,jdbcType=VARCHAR},
+        </if>
+        <if test="salePrice != null">
+          #{salePrice,jdbcType=REAL},
+        </if>
+        <if test="costPrice != null">
+          #{costPrice,jdbcType=REAL},
+        </if>
+        <if test="cateId != null">
+          #{cateId,jdbcType=INTEGER},
+        </if>
+        <if test="picUrl != null">
+          #{picUrl,jdbcType=VARCHAR},
+        </if>
+        <if test="createTime != null">
+          #{createTime,jdbcType=VARCHAR},
+        </if>
+        <if test="createUser != null">
+          #{createUser,jdbcType=INTEGER},
+        </if>
+      </trim>
+    </insert>
+
+    <select id="countByExample" parameterType="com.easybuy.entity.TProductExample" resultType="java.lang.Long">
+    select count(*) from t_product
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+
+    <select id="queryProducts" resultMap="myMap">
+   SELECT pro.ID,
+          pro.Name,
+          pro.DESCRIPTION,
+          SALE_PRICE,
+          COST_PRICE,
+          CATE_ID,
+          PIC_URL,
+          CREATE_USER,
+          CREATE_TIME,
+          sm.Name sname,
+          bc.name bname,
+          bc.id bigCatid
+   FROM t_product pro inner join t_small_category sm on pro.CATE_ID =sm.id inner join t_big_category bc on sm.PARENT_ID = bc.ID
+    </select>
+
+  <select id="queryProductById" resultMap="myMap" parameterType="long" >
+   SELECT pro.ID,
+          pro.Name,
+          pro.DESCRIPTION,
+          SALE_PRICE,
+          COST_PRICE,
+          CATE_ID,
+          PIC_URL,
+          CREATE_USER,
+          CREATE_TIME,
+          sm.Name sname,
+          bc.name bname,
+          bc.id bigCatid
+   FROM t_product pro inner join t_small_category sm on pro.CATE_ID =sm.id inner join t_big_category bc on sm.PARENT_ID = bc.ID
+where pro.id = #{id}
+  </select>
+
+  <select id="queryCateId" resultType="com.easybuy.entity.TProductMore">
+    select  sm.Name sname,
+  bc.name bname,
+  bc.id bigCatid
+  From  t_product pro inner join t_small_category sm on pro.CATE_ID =sm.id inner join t_big_category bc on sm.PARENT_ID = bc.ID
+  </select>
+
+  <update id="updateByExampleSelective" parameterType="map">
+    update t_product
+    <set>
+      <if test="record.id != null">
+        ID = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.name != null">
+        NAME = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.description != null">
+        DESCRIPTION = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.salePrice != null">
+        SALE_PRICE = #{record.salePrice,jdbcType=REAL},
+      </if>
+      <if test="record.costPrice != null">
+        COST_PRICE = #{record.costPrice,jdbcType=REAL},
+      </if>
+      <if test="record.cateId != null">
+        CATE_ID = #{record.cateId,jdbcType=INTEGER},
+      </if>
+      <if test="record.picUrl != null">
+        PIC_URL = #{record.picUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        CREATE_TIME = #{record.createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createUser != null">
+        CREATE_USER = #{record.createUser,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update t_product
+    set ID = #{record.id,jdbcType=INTEGER},
+      NAME = #{record.name,jdbcType=VARCHAR},
+      DESCRIPTION = #{record.description,jdbcType=VARCHAR},
+      SALE_PRICE = #{record.salePrice,jdbcType=REAL},
+      COST_PRICE = #{record.costPrice,jdbcType=REAL},
+      CATE_ID = #{record.cateId,jdbcType=INTEGER},
+      PIC_URL = #{record.picUrl,jdbcType=VARCHAR},
+      CREATE_TIME = #{record.createTime,jdbcType=VARCHAR},
+      CREATE_USER = #{record.createUser,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.easybuy.entity.TProduct">
+    update t_product
+    <set>
+      <if test="name != null">
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        DESCRIPTION = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="salePrice != null">
+        SALE_PRICE = #{salePrice,jdbcType=REAL},
+      </if>
+      <if test="costPrice != null">
+        COST_PRICE = #{costPrice,jdbcType=REAL},
+      </if>
+      <if test="cateId != null">
+        CATE_ID = #{cateId,jdbcType=INTEGER},
+      </if>
+      <if test="picUrl != null">
+        PIC_URL = #{picUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null">
+        CREATE_USER = #{createUser,jdbcType=INTEGER},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.easybuy.entity.TProduct">
+    update t_product
+    set NAME = #{name,jdbcType=VARCHAR},
+      DESCRIPTION = #{description,jdbcType=VARCHAR},
+      SALE_PRICE = #{salePrice,jdbcType=REAL},
+      COST_PRICE = #{costPrice,jdbcType=REAL},
+      CATE_ID = #{cateId,jdbcType=INTEGER},
+      PIC_URL = #{picUrl,jdbcType=VARCHAR}
+      CREATE_TIME = #{createTime,jdbcType=VARCHAR}
+      CREATE_USER = #{createUser,jdbcType=INTEGER}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="updataProduct" parameterType="com.easybuy.entity.TProduct">
+    update t_product
+    <set>
+      <if test="name != null">
+        NAME=#{name},
+      </if>
+      <if test="description != null">
+        DESCRIPTION=#{description},
+      </if>
+      <if test="salePrice != null">
+        SALE_PRICE=#{salePrice},
+      </if>
+      <if test="costPrice != null">
+        COST_PRICE=#{costPrice},
+      </if>
+      <if test="picUrl != null">
+        PIC_URL=#{picUrl},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME=#{createTime},
+      </if>
+    </set>
+    where ID = #{id}
+  </update>
+
+</mapper>
